@@ -1,0 +1,3 @@
+rootProject.name = 'spring-boot-grpc-client-server-net-devh-framework-example'
+include 'spring-boot-grpc-client-example'
+
