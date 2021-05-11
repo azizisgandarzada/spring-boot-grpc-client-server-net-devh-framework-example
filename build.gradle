@@ -1,22 +1,33 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.5'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+    id "io.spring.dependency-management" version "$springDependencyManagerVersion" apply false
 }
+subprojects {
+    group = 'com.grpc'
+    apply plugin: 'java'
 
-group = 'com.grpc'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 
-repositories {
-    mavenCentral()
-}
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+    compileJava {
+        options.compilerArgs += [
+                '-Amapstruct.defaultComponentModel=spring',
+                '-Amapstruct.unmappedTargetPolicy=IGNORE'
+        ]
+    }
 
-test {
-    useJUnitPlatform()
+    dependencies {
+        implementation "org.mapstruct:mapstruct:$mapStructVersion"
+
+        compileOnly 'org.projectlombok:lombok'
+
+        annotationProcessor 'org.projectlombok:lombok'
+        annotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+    }
 }
